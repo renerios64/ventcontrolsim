@@ -7,24 +7,27 @@ public class VentControlLayoutManager implements ActionListener {
     private JFrame mainFrame;
     private JLabel headerLabel;
     private JTextField ipAddressText;
+    private JTextField portText;
     private JButton createButton;
     private JPanel contentPanel;
     private JPanel infoPanel;
     private JScrollPane scrollPanel;
     private int instanceCounter = 0;
     private Box box;
+    private Box contentPanelBox;
 
-    public VentControlLayoutManager(){
+    public VentControlLayoutManager() {
         createGUIObjects();
         addGUIObjectsToGUI();
     }
 
     private void createGUIObjects() {
         box = Box.createVerticalBox();
+        contentPanelBox = Box.createVerticalBox();
+
         mainFrame = new JFrame("Vent Controller Sim");
 
         infoPanel = new JPanel(new GridBagLayout());
-        infoPanel.setPreferredSize(new Dimension(200, 60));
         infoPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
         headerLabel = new JLabel("Add Device:", JLabel.LEFT);
@@ -33,27 +36,23 @@ public class VentControlLayoutManager implements ActionListener {
         ipAddressText.setSize(100, 30);
 
         createButton = new JButton("New Device");
-        createButton.setSize(50,30);
+        createButton.setSize(50, 30);
         createButton.addActionListener(this);
 
+        portText = new JTextField("Enter Port here!", 8);
+        portText.setSize(100, 30);
+
         contentPanel = new JPanel();
-        contentPanel.setLayout(new GridLayout(0,1));
         scrollPanel = new JScrollPane();
-        scrollPanel.setPreferredSize(new Dimension(400,800));
-
-        mainFrame.add(box, BorderLayout.CENTER);
-        mainFrame.setSize(400, 800);
-
+        scrollPanel.setPreferredSize(new Dimension(400, 800));
     }
 
     private void addGUIObjectsToGUI() {
-
         GridBagConstraints gbc = new GridBagConstraints();
 
         scrollPanel.setViewportView(contentPanel);
         scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.ipadx = 10;
@@ -71,36 +70,41 @@ public class VentControlLayoutManager implements ActionListener {
         gbc.ipadx = 5;
         gbc.gridx = 4;
         gbc.gridy = 1;
+        gbc.gridheight = 2;
+        gbc.fill = GridBagConstraints.BOTH;
         infoPanel.add(createButton, gbc);
+
+        gbc.ipadx = 5;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        infoPanel.add(portText, gbc);
 
         box.add(infoPanel);
         box.add(scrollPanel);
         mainFrame.add(box, BorderLayout.CENTER);
+        mainFrame.setSize(400, 800);
         mainFrame.pack();
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setResizable(false);
         mainFrame.setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent e){
-        if(e.getSource() == createButton){
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == createButton) {
             instanceCounter++;
-            VentCntrlWidget newWidget = new VentCntrlWidget(instanceCounter);
+            VentCntrlWidget newWidget = new VentCntrlWidget(ipAddressText.getText(),
+                                                            portText.getText(),
+                                                            instanceCounter);
             JPanel newPanel = newWidget.getGUI();
-            GridBagConstraints gbc = new GridBagConstraints();
-
-            gbc.anchor = GridBagConstraints.NORTHWEST;
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-            gbc.gridx = 0;
-            gbc.gridwidth = 1;
-            gbc.gridy = instanceCounter;
-            gbc.gridheight = 1;
-            gbc.ipadx = 0;
-            gbc.ipady = 0;
-
-            contentPanel.add(newPanel, gbc);
+            contentPanelBox.add(newPanel);
+            contentPanel.add(contentPanelBox, BorderLayout.NORTH);
             mainFrame.validate();
-            System.out.println("Working?!? " + newWidget.getDeviceName());
+            System.out.println(newWidget.getDeviceName() + " is" +
+                               " talking to Server: " + newWidget.getServerAddress() +
+                               " on Port: " + newWidget.getPort());
         }
     }
 }
