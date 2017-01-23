@@ -99,7 +99,7 @@ public class VentControlLayoutManager implements ActionListener {
             gbc.ipady = 0;
 
             contentPanel.add(newPanel, gbc);
-            mainFrame.revalidate();
+            mainFrame.validate();
             System.out.println("Working?!? " + newWidget.getDeviceName());
         }
     }
