@@ -15,6 +15,8 @@ public class VentControlLayoutManager implements ActionListener {
     private int instanceCounter = 0;
     private Box box;
     private Box contentPanelBox;
+    private IpAddressValidator addressValidator = new IpAddressValidator();
+    private PortAssignmentValidator portValidator = new PortAssignmentValidator();
 
     public VentControlLayoutManager() {
         createGUIObjects();
@@ -94,17 +96,33 @@ public class VentControlLayoutManager implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == createButton) {
-            instanceCounter++;
-            VentCntrlWidget newWidget = new VentCntrlWidget(ipAddressText.getText(),
-                                                            portText.getText(),
-                                                            instanceCounter);
-            JPanel newPanel = newWidget.getGUI();
-            contentPanelBox.add(newPanel);
-            contentPanel.add(contentPanelBox, BorderLayout.NORTH);
-            mainFrame.validate();
-            System.out.println(newWidget.getDeviceName() + " is" +
-                               " talking to Server: " + newWidget.getServerAddress() +
-                               " on Port: " + newWidget.getPort());
+
+            String address = ipAddressText.getText();
+            String port = portText.getText();
+            boolean ipValidated  = addressValidator.ValidateIpAddress(address);
+            boolean portValidated = portValidator.ValidatePortAssignment(port);
+
+            if (!ipValidated){
+                JOptionPane.showMessageDialog(mainFrame,
+                        "Please check your IP Address!",
+                        "Invalid IP Address",
+                        JOptionPane.ERROR_MESSAGE);
+            } else if (!portValidated){
+                JOptionPane.showMessageDialog(mainFrame,
+                        "Please check our Port Assignment!",
+                        "Invalid Port Assignment",
+                        JOptionPane.ERROR_MESSAGE);
+            }else {
+                instanceCounter++;
+                VentCntrlWidget newWidget = new VentCntrlWidget(address, port, instanceCounter);
+                JPanel newPanel = newWidget.getGUI();
+                contentPanelBox.add(newPanel);
+                contentPanel.add(contentPanelBox, BorderLayout.NORTH);
+                mainFrame.validate();
+                System.out.println(newWidget.getDeviceName() + " is" +
+                        " talking to Server: " + newWidget.getServerAddress() +
+                        " on Port: " + newWidget.getPort());
+            }
         }
     }
 }

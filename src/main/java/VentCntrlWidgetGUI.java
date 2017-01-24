@@ -105,7 +105,7 @@ public class VentCntrlWidgetGUI implements ActionListener {
 
         //TEMP
         gbc.anchor = GridBagConstraints.EAST;
-        gbc.fill = GridBagConstraints.NONE;
+        gbc.fill = GridBagConstraints.CENTER;
         gbc.gridx = 0;
         gbc.gridwidth = 1;
         gbc.gridy = 2;
@@ -123,9 +123,8 @@ public class VentCntrlWidgetGUI implements ActionListener {
         gbc.ipadx = 5;
         gbc.ipady = 5;
         contentPanel.add(tempReading, gbc);
-        tempReading.setText("72");
 
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
         gbc.gridx = 2;
         gbc.gridwidth = 1;
@@ -136,7 +135,7 @@ public class VentCntrlWidgetGUI implements ActionListener {
         contentPanel.add(addTempBtn, gbc);
         addTempBtn.addActionListener(this);
 
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
         gbc.gridx = 3;
         gbc.gridwidth = 1;
@@ -167,9 +166,8 @@ public class VentCntrlWidgetGUI implements ActionListener {
         gbc.ipadx = 5;
         gbc.ipady = 5;
         contentPanel.add(positionReading, gbc);
-        positionReading.setText("50");
 
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
         gbc.gridx = 2;
         gbc.gridwidth = 1;
@@ -180,7 +178,7 @@ public class VentCntrlWidgetGUI implements ActionListener {
         contentPanel.add(openPositionBtn, gbc);
         openPositionBtn.addActionListener(this);
 
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
         gbc.gridx = 3;
         gbc.gridwidth = 1;
